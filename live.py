@@ -9,4 +9,5 @@ with mic as source:
 
 
 
-print(r.recognize_google(audio))
+print(r.recognize_wit(audio, "RYURPKB3HROF4E7IGOT4NOB5SGDWBZUQ"))
+#print(r.recognize_google(audio))
