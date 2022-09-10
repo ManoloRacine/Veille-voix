@@ -1,7 +1,7 @@
 from vosk import Model, KaldiRecognizer
 import pyaudio
 
-model = Model(r'C:\Users\User\PycharmProjects\Veille-Voix\vosk-model-en-us-0.22-lgraph')
+model = Model('vosk-model-small-fr-0.22')
 recognizer = KaldiRecognizer(model, 16000)
 
 cap = pyaudio.PyAudio()
