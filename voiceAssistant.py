@@ -5,6 +5,7 @@ import sys
 import json
 import asyncio
 import pyttsx3
+from timetts import *
 from weatherTest import *
 import pvporcupine
 from pvrecorder import PvRecorder
@@ -39,6 +40,9 @@ def callFunction(text):
         return True
     elif text.__contains__("off"):
         exit()
+        return True
+    elif text.__contains__("time"):
+        getTimeTTS()
         return True
     return False
 
