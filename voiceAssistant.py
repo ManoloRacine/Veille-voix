@@ -15,9 +15,10 @@ porcupine = pvporcupine.create(
     keywords=["picovoice"]
 )
 
-recorder = PvRecorder(device_index=2, frame_length=porcupine.frame_length)
+recorder = PvRecorder(device_index=0, frame_length=porcupine.frame_length)
 devices = PvRecorder.get_audio_devices()
-
+print(devices)
+engine = pyttsx3.init()
 q = queue.Queue()
 
 keywordDetected = False

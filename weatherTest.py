@@ -17,5 +17,3 @@ async def getweather():
         print(say)
         engine.say(say)
         engine.runAndWait()
-
-
