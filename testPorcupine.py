@@ -3,10 +3,10 @@ from pvrecorder import PvRecorder
 
 porcupine = pvporcupine.create(
     access_key="Zo7Lrcaw+A/nrba2GE7c0YeRpPjaNhVEIFO8BMv3YLPt+WzUj6rfkw==",
-    keywords=["picovoice"]
+    keyword_paths=["Ok-bot_en_windows_v2_1_0.ppn"]
 )
 
-recorder = PvRecorder(device_index=2, frame_length=porcupine.frame_length)
+recorder = PvRecorder(device_index=0, frame_length=porcupine.frame_length)
 recorder.start()
 devices = PvRecorder.get_audio_devices()
 
