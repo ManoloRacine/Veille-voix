@@ -7,7 +7,9 @@ import asyncio
 import pyttsx3
 from timetts import *
 from weatherTest import *
+from closeApp import *
 from joke import *
+from startApp import *
 import pvporcupine
 from pvrecorder import PvRecorder
 import pvrhino
@@ -24,9 +26,9 @@ rhino = pvrhino.create(
     context_path="./VeilleVoix_en_windows_v2_1_0.rhn"
 )
 
-recorderRhino = PvRecorder(device_index=0, frame_length=rhino.frame_length)
+recorderRhino = PvRecorder(device_index=2, frame_length=rhino.frame_length)
 
-recorder = PvRecorder(device_index=0, frame_length=porcupine.frame_length)
+recorder = PvRecorder(device_index=2, frame_length=porcupine.frame_length)
 devices = PvRecorder.get_audio_devices()
 
 print(devices)
@@ -42,42 +44,46 @@ def callback(indata, frames, time, status):
         q.put(bytes(indata))
 
 
-def callFunction(text):
-    if text != "":
-        print(text)
-    if text.__contains__("test"):
+def callFunction(intent, slots):
+    if intent != "":
+        print(intent)
+    if intent.__contains__("test"):
         print("test of the functions")
         return True
-    elif text == "weather":
+    elif intent == "weather":
         asyncio.run(getweather())
         return True
-    elif text == "off":
+    elif intent == "off":
         engine.say("good night")
         engine.runAndWait()
         exit()
         return True
-    elif text == "ttsOff":
+    elif intent == "ttsOff":
         engine.say("ok, no more text to speech")
         engine.runAndWait()
         engine.setProperty("volume", 0)
         return True
-    elif text == "ttsOn":
+    elif intent == "ttsOn":
         engine.setProperty("volume", 1)
         engine.say("ok, text to speech is on")
         engine.runAndWait()
         return True
-    elif text == "time":
+    elif intent == "time":
         getTimeTTS()
         return True
-    elif text == "joke":
+    elif intent == "joke":
         asyncio.run(getJoke())
+        return True
+    elif intent == "close":
+        asyncio.run(closeApp(slots["app1"].replace(" ", "")))
+        return True
+    elif intent == "open":
+        asyncio.run(startApp(slots["app1"].replace(" ", "")))
         return True
     return False
 
 
 
-#model = Model("vosk-model-en-us-0.22-lgraph")
-#rec = KaldiRecognizer(model, 16000)
 print("Voice assistant has started")
 
 recorder.start()
@@ -87,7 +93,6 @@ while True:
         recorder.start()
         q = queue.Queue()
         keywordDetected = False
-        #rec.Reset()
         functionDetected = False
 
     pcm = recorder.read()
@@ -95,7 +100,9 @@ while True:
     if keyword_index == 0:
         keywordDetected = True
         recorder.stop()
-        print("test")
+        print("yes ?")
+        engine.say("yes ?")
+        engine.runAndWait()
 
         while not functionDetected:
             recorderRhino.start()
@@ -106,17 +113,7 @@ while True:
                 if inference.is_understood:
                     recorderRhino.stop()
                     intent = inference.intent
+                    slots = inference.slots
                     print(intent)
-                    functionDetected = callFunction(intent)
-
-
-       # data = q.get()
-       # if rec.AcceptWaveform(data):
-       #     text = json.loads(rec.Result())
-      #      callFunction(text["text"])
-
-       # else:
-      #      partialResult = json.loads(rec.PartialResult())
-
-      #      if partialResult["partial"] != "":
-       #         print(partialResult["partial"])
+                    print(slots)
+                    functionDetected = callFunction(intent, slots)

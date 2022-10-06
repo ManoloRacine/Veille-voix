@@ -1,2 +1,4 @@
 import os
-os.system("taskkill /f /im  Discord.exe")
+
+async def closeApp(app) :
+    os.system("taskkill /f /im " + app + ".exe")
