@@ -8,6 +8,6 @@ async def startApp(app) :
     elif app == "chrome" :
         subprocess.Popen(r'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe')
     elif app == "steam":
-        subprocess.Popen(r'C:\Program Files (x86)\Steam')
+        subprocess.Popen(r'C:\Program Files (x86)\Steam\steam.exe')
     else:
         subprocess.Popen([app + '.exe'])
